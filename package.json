@@ -16,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/ozzkan-burak/basics-for-jwt/issues"
   },
-  "homepage": "https://github.com/ozzkan-burak/basics-for-jwt#readme"
+  "homepage": "https://github.com/ozzkan-burak/basics-for-jwt#readme",
+  "dependencies": {
+    "dotenv": "^11.0.0",
+    "express": "^4.17.2",
+    "express-async-errors": "^3.1.1",
+    "http-status-codes": "^2.2.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
