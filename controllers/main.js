@@ -1,18 +1,30 @@
 const CustomAPIError =require('../errors/custom-api-error');
+const jwt = require('jsonwebtoken');
 
 
 const login = async (req, res) => {
   const {username, password} = req.body;
 
+  const id = new Date().getTime();
+  const token = jwt.sign({id, username}, process.env.JWT_SECRET, {expiresIn: '30d'});
+
   if(!username || !password) {
     throw new CustomAPIError(400, 'Username and password are required');
   }
 
-  console.log(username, password);
-  res.send('Fake Login/Register/Signup Route');
+ res.status(200).json({msg: 'user created', token});
 };
 
 const dashboard = async (req, res) => {
+
+  const authHeader = req.headers['authorization'];
+  if(!authHeader || !authHeader.startsWith('Bearer')) {
+    throw new CustomAPIError(400, 'No Token provide');
+  }
+
+  const token = authHeader.split(' ')[1];
+  console.log(token);
+
   const luckyNumber = Math.floor(Math.random() * 100);
 
   res.status(200).json({msg: `Hello Burak`, secret:`Here is your authorized data, your lucky number is ${luckyNumber}`});
