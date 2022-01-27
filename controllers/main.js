@@ -5,29 +5,24 @@ const jwt = require('jsonwebtoken');
 const login = async (req, res) => {
   const {username, password} = req.body;
 
+  console.log(req.body)
+
   const id = new Date().getTime();
   const token = jwt.sign({id, username}, process.env.JWT_SECRET, {expiresIn: '30d'});
 
-  if(!username || !password) {
-    throw new CustomAPIError(400, 'Username and password are required');
-  }
+  // if(!username || !password) {
+  //   throw new CustomAPIError(400, 'Username and password are required');
+  // }
 
  res.status(200).json({msg: 'user created', token});
 };
 
 const dashboard = async (req, res) => {
+  console.log(req.user);
 
-  const authHeader = req.headers['authorization'];
-  if(!authHeader || !authHeader.startsWith('Bearer')) {
-    throw new CustomAPIError(400, 'No Token provide');
-  }
-
-  const token = authHeader.split(' ')[1];
-  console.log(token);
-
-  const luckyNumber = Math.floor(Math.random() * 100);
-
-  res.status(200).json({msg: `Hello Burak`, secret:`Here is your authorized data, your lucky number is ${luckyNumber}`});
+  const luckyNumber = Math.floor(Math.random() * 100);  
+  res.status(200).json({msg: `Hello ${req.user.username}`, secret:`Here is your authorized data, your lucky number is ${luckyNumber}`});
+  
 };
 
 module.exports ={
