@@ -1,4 +1,4 @@
-const CustomAPIError =require('../errors/custom-api-error');
+const {BadRequestError} = require('../errors');
 const jwt = require('jsonwebtoken');
 
 
@@ -10,9 +10,9 @@ const login = async (req, res) => {
   const id = new Date().getTime();
   const token = jwt.sign({id, username}, process.env.JWT_SECRET, {expiresIn: '30d'});
 
-  // if(!username || !password) {
-  //   throw new CustomAPIError(400, 'Username and password are required');
-  // }
+  if(!username || !password) {
+    throw new BadRequestError('Username and password are required');
+  }
 
  res.status(200).json({msg: 'user created', token});
 };
